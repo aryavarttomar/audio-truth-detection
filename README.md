@@ -16,8 +16,6 @@ To develop a robust system that leverages audio features and machine learning te
 - Contains short audio recordings of narrated stories labeled as `true` or `false`
 - Includes metadata such as language
 
-🔗 Dataset: [https://github.com/declare-lab/MLEND](https://github.com/declare-lab/MLEND)
-
 ---
 
 ##  Pipeline Overview
@@ -74,20 +72,3 @@ To develop a robust system that leverages audio features and machine learning te
 - Address class imbalance using resampling or class weighting
 - Evaluate chunk fusion strategies or overlapping windows
 
----
-
-##  Installation & Usage
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/audio-truth-detection.git
-cd audio-truth-detection
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run feature extraction
-python extract_features.py
-
-# Train models and evaluate
-python train_models.py
