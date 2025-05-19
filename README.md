@@ -1,71 +1,93 @@
-Truth Detection from Audio: ML-Powered Story Classification
+# Truth Detection from Audio: ML-Powered Story Classification
 
-This project aims to classify 30-second narrated audio stories as either true or false using machine learning. Leveraging the MLEnd Deception Dataset, the system extracts meaningful audio features and applies supervised learning techniques to detect deception in speech.
+This project focuses on building a machine learning pipeline to classify **30-second audio clips** of narrated stories as **true** or **false**. Using the [MLEnd Deception Dataset](https://github.com/declare-lab/MLEND), we extract acoustic features and train multiple ML models to detect deception from voice recordings.
 
-Project Objective
+---
 
-To develop a machine learning pipeline that can identify truthfulness from audio data using acoustic features such as MFCCs, pitch, power, and spectral characteristics.
+##  Project Objective
 
-Dataset
+To develop a robust system that leverages audio features and machine learning techniques to determine the veracity of narrated stories. This has practical applications in fields such as **forensic linguistics**, **content moderation**, and **deception detection**.
 
-MLEnd Deception Dataset
+---
 
-Contains short audio clips labeled as true or false
+##  Dataset
 
-Includes language metadata for each sample
+**MLEnd Deception Dataset**  
+- Contains short audio recordings of narrated stories labeled as `true` or `false`
+- Includes metadata such as language
 
-Pipeline Overview
+🔗 Dataset: [https://github.com/declare-lab/MLEND](https://github.com/declare-lab/MLEND)
 
-Preprocessing:
+---
 
-Standardized all audio to 44,100 Hz
+##  Pipeline Overview
 
-Binary label encoding (1 for true, 0 for false)
+### 1. **Preprocessing**
+- Standardized sampling rate (44,100 Hz)
+- Labeled true/false stories (1/0)
+- Stratified train-test split with language grouping
 
-Stratified train-test split
+### 2. **Audio Chunking**
+- Each audio file is segmented into:
+  - First 30 seconds
+  - Middle 30 seconds
+  - Last 30 seconds
 
-Audio Chunking:
+### 3. **Feature Extraction** (using `librosa`)
+- MFCCs
+- Pitch (mean, std)
+- Power (RMS energy)
+- Spectral features (centroid, bandwidth, rolloff)
+- Voiced Frame Rate
 
-Each file is segmented into: First 30s, Middle 30s, Last 30s
+### 4. **Model Training**
+- Models used:
+  - Support Vector Machine (SVM)
+  - K-Nearest Neighbors (KNN)
+  - Logistic Regression
+- Evaluation metrics:
+  - Accuracy
+  - Precision
+  - Recall
+  - F1-Score
+  - Confusion Matrix
 
-Feature Extraction:
+### 5. **Ensemble Learning**
+- **Hard Voting** ensemble (SVM + KNN) outperformed individual models
+- Best results from **Middle Chunk** (~60% test accuracy)
 
-MFCCs (Mel Frequency Cepstral Coefficients)
+---
 
-Spectral features (centroid, bandwidth, rolloff)
+##  Key Findings
 
-Pitch statistics and voiced frame rate
+- **Middle Chunk** was most predictive of truth/deception.
+- Language alone had **no significant effect** on classification accuracy.
+- **Power** and **MFCC_1** were the most correlated features with the label.
+- Ensemble model improved classification performance over individual models.
 
-Power (RMS energy)
+---
 
-Model Training:
+##  Future Improvements
 
-SVM, KNN, and Logistic Regression
+- Test advanced ensemble techniques (e.g., soft voting, stacking)
+- Explore additional prosodic or emotional features
+- Address class imbalance using resampling or class weighting
+- Evaluate chunk fusion strategies or overlapping windows
 
-Evaluated with accuracy, precision, recall, F1-score
+---
 
-Ensemble Learning:
+##  Installation & Usage
 
-Combined SVM and KNN using hard voting
+```bash
+# Clone the repository
+git clone https://github.com/your-username/audio-truth-detection.git
+cd audio-truth-detection
 
-Best results achieved with the middle audio chunk (up to 60% test accuracy)
+# Install dependencies
+pip install -r requirements.txt
 
-Key Findings
+# Run feature extraction
+python extract_features.py
 
-Middle chunk of audio was most predictive
-
-Language alone did not significantly influence truth classification
-
-Power and MFCC_1 were the most important features
-
-Ensemble models outperformed individual models
-
-Future Improvements
-
-Explore additional emotional or prosodic features
-
-Try advanced ensembles like soft voting or stacking
-
-Address class imbalance
-
-Experiment with overlapping or variable-length chunking
+# Train models and evaluate
+python train_models.py
